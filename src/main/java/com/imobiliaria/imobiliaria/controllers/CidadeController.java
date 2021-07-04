@@ -47,9 +47,14 @@ public class CidadeController {
 
     @DeleteMapping("/{codigo}")
     public ResponseEntity<Boolean> deleteCidade(@PathVariable("codigo") Long codigo){
-        System.out.println("aaa");
         service.delete(codigo);
         return ResponseEntity.ok().body(true);
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<List<Cidade>> filteredListByNomeCidade(@RequestParam("nomeCidade") String nomeCidade) {
+        List<Cidade> cidadesFiltradas = service.findCidadeByFilter(nomeCidade);
+        return new ResponseEntity<>(cidadesFiltradas, HttpStatus.OK);
     }
 
 

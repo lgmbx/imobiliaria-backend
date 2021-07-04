@@ -56,6 +56,10 @@ public class CidadeService {
         repository.deleteById(cidade.getCodigo());
     }
 
+    public List<Cidade> findCidadeByFilter(String nomeCidade){
+        return repository.findCidadeByFilterName(nomeCidade);
+    }
+
     private void isCidadeJaCadastrada(Cidade cidade){
         Optional<Cidade> c = repository.findCidadeByName(cidade.getNomeCidade());
         if(c.isPresent()){
