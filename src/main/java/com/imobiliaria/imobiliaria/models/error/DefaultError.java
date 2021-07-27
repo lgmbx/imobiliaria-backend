@@ -14,13 +14,13 @@ public class DefaultError {
     @JsonProperty("timestamp")
     private final LocalDateTime timestamp;
 
-    @JsonProperty("status code")
+    @JsonProperty("statusCode")
     private final Integer status;
 
-    @JsonProperty("status error")
+    @JsonProperty("statusError")
     private final String error;
 
-    @JsonProperty("error messages")
+    @JsonProperty("errorMessages")
     private final Map<String, String> messages;
 
     @JsonProperty("path")

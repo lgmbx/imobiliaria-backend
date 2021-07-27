@@ -21,7 +21,7 @@ public class GlobalHandlerException {
     @ExceptionHandler(DuplicatedDataException.class)
     protected ResponseEntity<DefaultError> duplicatedDataExceptionHandler(DuplicatedDataException ex, HttpServletRequest request){
         HashMap<String, String> errors = new HashMap<>();
-        errors.put("Dado duplicado", ex.getMessage());
+        errors.put("duplicatedData", ex.getMessage());
 
         DefaultError error = new DefaultError(
                 LocalDateTime.now(),

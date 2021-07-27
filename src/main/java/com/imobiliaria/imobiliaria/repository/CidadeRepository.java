@@ -1,6 +1,8 @@
 package com.imobiliaria.imobiliaria.repository;
 
 import com.imobiliaria.imobiliaria.entities.Cidade;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,7 +23,10 @@ public interface CidadeRepository extends JpaRepository<Cidade, Long> {
 
     @Query(
             "  select c from Cidade c " +
-                    "where c.nomeCidade like %:nomeCidade% "
+                    "where " +
+                    ":nomeCidade is null or c.nomeCidade = :nomeCidade"
     )
-    List<Cidade> findCidadeByFilterName(@Param("nomeCidade") String nomeCidade);
+    Page<Cidade> findCidadeByFilterName(
+            @Param("nomeCidade") String nomeCidade,
+            Pageable pageable);
 }

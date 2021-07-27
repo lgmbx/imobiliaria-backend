@@ -4,6 +4,8 @@ import com.imobiliaria.imobiliaria.entities.Cidade;
 import com.imobiliaria.imobiliaria.exceptions.DuplicatedDataException;
 import com.imobiliaria.imobiliaria.exceptions.NotFoundException;
 import com.imobiliaria.imobiliaria.repository.CidadeRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -23,8 +25,8 @@ public class CidadeService {
         this.repository = repository;
     }
 
-    public List<Cidade> findAll(){
-        return repository.findAll();
+    public Page<Cidade> findAll(Pageable pageable){
+        return repository.findAll(pageable);
     }
 
     public Cidade getById(Long codigo){
@@ -56,8 +58,8 @@ public class CidadeService {
         repository.deleteById(cidade.getCodigo());
     }
 
-    public List<Cidade> findCidadeByFilter(String nomeCidade){
-        return repository.findCidadeByFilterName(nomeCidade);
+    public Page<Cidade> findPageable(String nomeCidade, Pageable pageable){
+        return repository.findCidadeByFilterName(nomeCidade, pageable);
     }
 
     private void isCidadeJaCadastrada(Cidade cidade){
@@ -66,6 +68,8 @@ public class CidadeService {
             throw new DuplicatedDataException("Cidade já cadastrada!");
         }
     }
+
+
 
 
 
