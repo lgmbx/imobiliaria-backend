@@ -33,17 +33,9 @@ public class CidadeController {
 
     @GetMapping()
     public ResponseEntity<Page<Cidade>> getAllCidadesPageable(
-            @RequestParam(value = "nomeCidade", defaultValue = "") String nomeCidade,
             @PageableDefault(page = 0, size = 10, sort = "nomeCidade", direction = Sort.Direction.ASC) Pageable pageable){
 
-        Page<Cidade> cidades;
-
-
-        if(nomeCidade.isBlank()){
-             cidades = service.findAll(pageable);
-        } else {
-            cidades = service.findPageable(nomeCidade, pageable);
-        }
+        Page<Cidade> cidades = service.findAllPageable(pageable);
 
         return ResponseEntity.ok().body(cidades);
     }
@@ -76,10 +68,10 @@ public class CidadeController {
     @GetMapping("/filter")
     public ResponseEntity<Page<Cidade>> getCidadesFilterPageable(
             @RequestParam(name = "nomeCidade") String nomeCidade,
+            @RequestParam(name = "uf") String uf,
             @PageableDefault(page = 0, size = 10, sort = "nomeCidade", direction = Sort.Direction.ASC) Pageable pageable) {
 
-
-        Page<Cidade> cidadesFiltradas = service.findPageable(nomeCidade, pageable);
+        Page<Cidade> cidadesFiltradas = service.findFilterPageable(nomeCidade, uf, pageable);
         return new ResponseEntity<>(cidadesFiltradas, HttpStatus.OK);
     }
 

@@ -24,9 +24,11 @@ public interface CidadeRepository extends JpaRepository<Cidade, Long> {
     @Query(
             "  select c from Cidade c " +
                     "where " +
-                    ":nomeCidade is null or c.nomeCidade = :nomeCidade"
+                    "(:nomeCidade is null or c.nomeCidade = :nomeCidade) " +
+                    "and (:uf is null or c.uf = :uf) "
     )
-    Page<Cidade> findCidadeByFilterName(
+    Page<Cidade> findCidadeByFilter(
             @Param("nomeCidade") String nomeCidade,
+            @Param("uf") String uf,
             Pageable pageable);
 }

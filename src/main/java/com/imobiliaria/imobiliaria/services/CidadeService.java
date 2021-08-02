@@ -25,7 +25,7 @@ public class CidadeService {
         this.repository = repository;
     }
 
-    public Page<Cidade> findAll(Pageable pageable){
+    public Page<Cidade> findAllPageable(Pageable pageable){
         return repository.findAll(pageable);
     }
 
@@ -58,8 +58,11 @@ public class CidadeService {
         repository.deleteById(cidade.getCodigo());
     }
 
-    public Page<Cidade> findPageable(String nomeCidade, Pageable pageable){
-        return repository.findCidadeByFilterName(nomeCidade, pageable);
+    public Page<Cidade> findFilterPageable(String nomeCidade, String uf, Pageable pageable){
+       nomeCidade = nomeCidade.isBlank() ? null : nomeCidade;
+       uf = uf.isBlank() ? null : uf;
+
+       return repository.findCidadeByFilter(nomeCidade, uf, pageable);
     }
 
     private void isCidadeJaCadastrada(Cidade cidade){
