@@ -1,6 +1,7 @@
 package com.imobiliaria.imobiliaria.repository;
 
 import com.imobiliaria.imobiliaria.entities.Cidade;
+import com.imobiliaria.imobiliaria.models.CidadeSelectOptions;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -31,4 +32,16 @@ public interface CidadeRepository extends JpaRepository<Cidade, Long> {
             @Param("nomeCidade") String nomeCidade,
             @Param("uf") String uf,
             Pageable pageable);
+
+    @Query(
+            " select distinct c.nomeCidade from Cidade c " +
+                    "order by c.nomeCidade asc"
+    )
+    List<String> findAllSelectNomeCidadeOptions();
+
+    @Query(
+            " select distinct c.uf from Cidade c "+
+                    "order by c.uf asc"
+    )
+    List<String> findAllSelectUfOptions();
 }
