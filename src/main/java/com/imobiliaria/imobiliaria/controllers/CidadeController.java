@@ -1,6 +1,7 @@
 package com.imobiliaria.imobiliaria.controllers;
 
 import com.imobiliaria.imobiliaria.entities.Cidade;
+import com.imobiliaria.imobiliaria.models.CidadeSelectOptions;
 import com.imobiliaria.imobiliaria.services.CidadeService;
 import net.bytebuddy.implementation.bytecode.constant.NullConstant;
 import org.apache.tomcat.util.json.JSONParser;
@@ -73,6 +74,13 @@ public class CidadeController {
 
         Page<Cidade> cidadesFiltradas = service.findFilterPageable(nomeCidade, uf, pageable);
         return new ResponseEntity<>(cidadesFiltradas, HttpStatus.OK);
+    }
+
+    @GetMapping("/getAllSelectOptions")
+    public ResponseEntity<CidadeSelectOptions> getAllSelectOptions(){
+        CidadeSelectOptions cidadeOptions = service.getAllSelectOptions();
+
+        return new ResponseEntity<>(cidadeOptions, HttpStatus.OK);
     }
 
 

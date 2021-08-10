@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 
@@ -19,7 +20,10 @@ public class GlobalHandlerException {
 
     //dado duplicado
     @ExceptionHandler(DuplicatedDataException.class)
-    protected ResponseEntity<DefaultError> duplicatedDataExceptionHandler(DuplicatedDataException ex, HttpServletRequest request){
+    protected ResponseEntity<DefaultError> duplicatedDataExceptionHandler(
+            DuplicatedDataException ex,
+            HttpServletRequest request
+    ){
         HashMap<String, String> errors = new HashMap<>();
         errors.put("duplicatedData", ex.getMessage());
 
@@ -35,7 +39,10 @@ public class GlobalHandlerException {
 
     //exceptions do validation
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    protected ResponseEntity<DefaultError> validationExceptionHandler(MethodArgumentNotValidException ex, HttpServletRequest request){
+    protected ResponseEntity<DefaultError> validationExceptionHandler(
+            MethodArgumentNotValidException ex,
+            HttpServletRequest request
+    ){
         HashMap<String, String> validationErrors = new HashMap<>();
 
         ex.getBindingResult().getAllErrors().forEach(e -> {
@@ -47,7 +54,7 @@ public class GlobalHandlerException {
         DefaultError error = new DefaultError(
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
-                "Validação dos dados",
+                "DATA VALIDATION",
                 validationErrors,
                 request.getRequestURI());
 
@@ -56,7 +63,10 @@ public class GlobalHandlerException {
 
     //dado nao encontrado
     @ExceptionHandler(NotFoundException.class)
-    protected ResponseEntity<DefaultError> notFoundExceptionHandler(NotFoundException ex, HttpServletRequest request){
+    protected ResponseEntity<DefaultError> notFoundExceptionHandler(
+            NotFoundException ex,
+            HttpServletRequest request
+    ){
         HashMap<String, String> errors = new HashMap<>();
         errors.put("Dado não encontrado", ex.getMessage());
 
@@ -68,4 +78,22 @@ public class GlobalHandlerException {
                 request.getRequestURI());
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    protected ResponseEntity<DefaultError> SQLIntegrityConstraintViolationException(
+            SQLIntegrityConstraintViolationException ex,
+            HttpServletRequest request
+    ){
+        HashMap<String, String> errors = new HashMap<>();
+        errors.put("Dado em utilização", ex.getMessage());
+
+        DefaultError error = new DefaultError(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                "NOT AUTHORIZED",
+                errors,
+                request.getRequestURI());
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
 }
